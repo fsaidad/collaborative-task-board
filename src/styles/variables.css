@@ -2,37 +2,37 @@
   /* ЦВЕТОВАЯ ПАЛИТРА   */
 
   /* Основные цвета */
-  --color-primary: #8b5cf6;
-  --color-primary-light: #ede9fe;
-  --color-primary-dark: #7c3aed;
+  --color-primary: #2563eb;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #1d4ed8;
 
-  /* Фоновые цвета с теплым оттенком */
-  --color-bg: #fefefe;
-  --color-bg-secondary: #faf5f0;
-  --color-bg-hover: #f8f4ef;
+  /* Фоновые цвета */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-hover: #f1f5f9;
   --color-bg-card: #ffffff;
 
-  /* Текстовые цвета */
-  --color-text: #292524;
-  --color-text-light: #78716c;
-  --color-text-lighter: #a8a29e;
+  /* Текстовые цвета  */
+  --color-text: #000000;
+  --color-text-light: #475569;
+  --color-text-lighter: #94a3b8;
   --color-text-on-primary: #ffffff;
 
   /* Цвета границ */
-  --color-border: #e7e5e4;
-  --color-border-hover: #d6d3d1;
-  --color-border-focus: #8b5cf6;
+  --color-border: #cbd5e1;
+  --color-border-hover: #94a3b8;
+  --color-border-focus: #2563eb;
 
-  /* Семантические цвета (приоритеты задач) */
-  --color-success: #059669;
-  --color-warning: #d97706;
-  --color-error: #dc2626;
+  /* Семантические цвета  */
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 
   /* Цвета для статусов задач */
-  --color-status-todo: #78716c;
-  --color-status-inprogress: #0ea5e9;
-  --color-status-done: #059669;
-  --color-status-blocked: #dc2626;
+  --color-status-todo: #64748b;
+  --color-status-inprogress: #2563eb;
+  --color-status-done: #16a34a;
+  --color-status-blocked: #ef4444;
 
   /* ОТСТУПЫ  */
 
