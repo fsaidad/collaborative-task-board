@@ -1,12 +1,11 @@
 import '@styles/global.css';
 import Button from '../ui/Button';
 import { Plus } from 'lucide-react';
+import { Card } from '../ui/Card';
 
 function App() {
   return (
-    <div>
-      <h1>Task Board</h1>
-      <p>Проект запущен и готов к разработке!</p>
+    <div style={{ display: 'flex', padding: '50px', flexDirection: 'column' }}>
       <Button variant="primary" icon={Plus} size="large">
         Создать задачу
       </Button>
@@ -19,6 +18,24 @@ function App() {
       <Button variant="secondary" size="large">
         Создать задачу
       </Button>
+      <div style={{ width: `40%`, display: 'flex', flexDirection: 'column' }}>
+        <Card title="new" description="Очень сложная задача" commentsCount={5}></Card>
+        <Card title="new" description="Очень сложная задача"></Card>
+        <Card
+          priority={{ level: 'high', label: 'пваыпвап' }}
+          title="new"
+          description="Очень сложная задача"
+          assignee={{ name: 'gsfgdg' }}
+          commentsCount={5}
+          dueDateText="21.12.25"
+          isOverdue={false}
+          status="В работе"
+        >
+          <Button variant="ghost" size={'medium'}>
+            БЕДА
+          </Button>
+        </Card>
+      </div>
     </div>
   );
 }
