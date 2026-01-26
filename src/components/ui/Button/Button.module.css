@@ -1,32 +1,27 @@
 /* Базовые стили кнопки */
 .button {
-  /* Layout */
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  /* Spacing */
   gap: var(--space-sm);
   padding: var(--space-sm) var(--space-md);
-  /* Typography */
+
   font-family: var(--font-family-sans);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-tight);
   white-space: nowrap;
 
-  /* Appearance */
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background-color: transparent;
   color: inherit;
   cursor: pointer;
 
-  /* Interaction */
   transition: all var(--transition-fast);
   user-select: none;
 
-  /* Focus styles */
   outline: none;
 }
 
@@ -40,9 +35,6 @@
   cursor: not-allowed;
 }
 
-/* ===== ВАРИАНТЫ КНОПКИ (VARIANTS) ===== */
-
-/* Primary (фиолетовая) */
 .primary {
   background-color: var(--color-primary);
   color: var(--color-text-on-primary);
@@ -59,7 +51,6 @@
   opacity: 0.9;
 }
 
-/* Secondary (контурная) */
 .secondary {
   background-color: transparent;
   color: var(--color-text);
@@ -75,7 +66,6 @@
   background-color: var(--color-border);
 }
 
-/* Ghost (невидимая) */
 .ghost {
   background-color: transparent;
   color: var(--color-text);
@@ -90,7 +80,6 @@
   background-color: var(--color-border);
 }
 
-/* Destructive (красная) */
 .destructive {
   background-color: var(--color-error);
   color: var(--color-text-on-primary);
@@ -101,8 +90,6 @@
   background-color: #b91c1c;
   border-color: #b91c1c;
 }
-
-/* ===== РАЗМЕРЫ КНОПКИ (SIZES) ===== */
 
 .small {
   padding: var(--space-xs) var(--space-sm);
@@ -119,27 +106,23 @@
   font-size: var(--font-size-base);
 }
 
-/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ===== */
-
 .fullWidth {
   width: 100%;
 }
 
-/* Стили для иконки внутри кнопки */
 .icon {
   display: inline-flex;
   align-items: center;
 }
 
 .iconLeft {
-  order: -1; /* Иконка слева от текста */
+  order: -1;
 }
 
 .iconRight {
-  order: 1; /* Иконка справа от текста */
+  order: 1;
 }
 
-/* Анимация загрузки */
 @keyframes spin {
   from {
     transform: rotate(0deg);
