@@ -1,9 +1,9 @@
 import { MessageSquare, Calendar } from 'lucide-react';
-import styles from './Card.module.css';
+import styles from './TaskUI.module.css';
 import { cn } from '@lib/utils';
 import type { CardProps } from './types';
 
-export const Card = ({
+export const TaskUI = ({
   title,
   description,
   dueDateText,
