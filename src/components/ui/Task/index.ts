@@ -1,2 +1,2 @@
-export { Card } from './Card';
+export { TaskUI } from './TaskUI';
 export type { CardProps } from './types';

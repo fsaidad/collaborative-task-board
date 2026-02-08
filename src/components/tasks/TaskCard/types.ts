@@ -1,4 +1,4 @@
-import { type CardProps } from '../../ui/Card/types';
+import { type CardProps } from '../../ui/Task/types';
 
 export interface TaskCardProps {
   taskId: string;
