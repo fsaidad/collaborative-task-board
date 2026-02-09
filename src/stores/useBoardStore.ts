@@ -29,8 +29,8 @@ interface BoardStore {
   addCard: (columnId: string, title: string, description?: string) => string;
   moveCard: (cardId: string, toColumnId: string, newIndex: number) => void;
 
-  getColumnsArray: () => Column[];
-  getCardsInColumn: (columnId: string) => TaskCard[];
+  // getColumnsArray: () => Column[];
+  // getCardsInColumn: (columnId: string) => TaskCard[];
 }
 
 export const useBoardStore = create<BoardStore>()(
@@ -84,7 +84,7 @@ export const useBoardStore = create<BoardStore>()(
           },
         },
 
-        cardsByColumn: { 1: [], 2: [], 3: [] },
+        cardsByColumn: { '1': ['task-1'], '2': ['task-3'], '3': ['task-2'] },
         columnOrder: ['1', '2', '3'],
 
         addColumn(title: string) {
@@ -107,32 +107,33 @@ export const useBoardStore = create<BoardStore>()(
           });
         },
 
-        addCard(title, columnId, description) {
+        addCard(columnId: string, title: string, description?: string) {
           const cardId = `card-${Date.now()}`;
           const now = new Date();
+
           set(state => {
-            const newTaskCard = {
-              ...state.taskCards,
-              [cardId]: {
-                id: cardId,
-                title,
-                columnId,
-                description,
-                assigneIds: [],
-                createdAt: now,
-                updatedAt: now,
+            const currentCardsInColumn = state.cardsByColumn[columnId] || [];
+
+            return {
+              taskCards: {
+                ...state.taskCards,
+                [cardId]: {
+                  id: cardId,
+                  title,
+                  columnId,
+                  description,
+                  assigneIds: [],
+                  createdAt: now,
+                  updatedAt: now,
+                },
+              },
+              cardsByColumn: {
+                ...state.cardsByColumn,
+                [columnId]: [...currentCardsInColumn, cardId],
               },
             };
-
-            const newCardsByColumn = {
-              ...state.cardsByColumn,
-              [columnId]: [...(state.cardsByColumn[columnId] || []), cardId],
-            };
-            return {
-              taskCards: newTaskCard,
-              cardsByColumn: newCardsByColumn,
-            };
           });
+
           return cardId;
         },
         // Обновление карточки
@@ -189,30 +190,6 @@ export const useBoardStore = create<BoardStore>()(
               cardsByColumn: newCardsByColumn,
             };
           });
-        },
-
-        // ===== ХЕЛПЕРЫ =====
-
-        // Получить массив колонок в правильном порядке
-        getColumnsArray: () => {
-          const state = get();
-          return state.columnOrder.map(id => state.columns[id]).filter(Boolean);
-        },
-
-        // Получить карточки колонки в правильном порядке
-        getCardsInColumn: (columnId: string) => {
-          const state = get();
-          const cardIds = state.cardsByColumn[columnId] || [];
-
-          return cardIds.map(id => state.taskCards[id]).filter(Boolean);
-          // Порядок уже правильный - как в cardsByColumn[columnId]
-        },
-
-        // Найти колонку карточки
-        getCardColumn: (cardId: string) => {
-          const state = get();
-          const card = state.taskCards[cardId];
-          return card ? card.columnId : null;
         },
       }),
       {
