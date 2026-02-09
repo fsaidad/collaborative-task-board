@@ -1,0 +1,37 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 8px;
+}
+
+.boardTitle {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.columns {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+
+.addColumnButton {
+  min-width: 280px;
+  align-self: flex-start;
+}
