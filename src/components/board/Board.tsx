@@ -6,13 +6,11 @@ import Button from '../ui/Button';
 import { Column } from '../column/Column';
 
 export const Board = () => {
-  // 🎯 РАЗДЕЛЯЕМ подписки - каждая возвращает примитив/ссылку
   const columnOrder = useBoardStore(state => state.columnOrder);
   const columns = useBoardStore(state => state.columns);
 
   const addColumn = useBoardStore(state => state.addColumn);
 
-  // useMemo для вычислений
   const columnsArray = useMemo(
     () => columnOrder.map(id => columns[id]).filter(Boolean),
     [columnOrder, columns]
@@ -31,7 +29,6 @@ export const Board = () => {
     <div className={styles.board}>
       <div className={styles.header}>
         <h1 className={styles.boardTitle}>Доска задач</h1>
-        <Button onClick={handleAddColumn}>+ Добавить колонку</Button>
       </div>
 
       <div className={styles.columns}>
