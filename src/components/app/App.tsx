@@ -1,9 +1,8 @@
 import '@styles/global.css';
-
-import { Board } from '../board/Board';
+import { DndBoardWrapper } from '../board/DndBoardWrapper';
 
 function App() {
-  return <Board />;
+  return <DndBoardWrapper />;
 }
 
 export default App;

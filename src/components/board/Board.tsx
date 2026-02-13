@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
-
 import styles from './Board.module.css';
 import { useBoardStore } from '@/stores/useBoardStore';
 import Button from '../ui/Button';
 import { Column } from '../column/Column';
 
+// ⚠️ Это чистый компонент без DnD состояния
 export const Board = () => {
   const columnOrder = useBoardStore(state => state.columnOrder);
   const columns = useBoardStore(state => state.columns);
-
   const addColumn = useBoardStore(state => state.addColumn);
 
   const columnsArray = useMemo(
@@ -23,7 +22,8 @@ export const Board = () => {
     }
   };
 
-  console.log('Board render'); // Для отладки
+  // 🔄 Этот лог будет показывать только когда меняются данные в сторе
+  console.log('🟦 Board render (pure)');
 
   return (
     <div className={styles.board}>

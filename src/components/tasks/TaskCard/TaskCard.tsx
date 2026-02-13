@@ -1,39 +1,47 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useMemo } from 'react';
+import { useDraggable } from '@dnd-kit/core';
 import { useBoardStore } from '@/stores/useBoardStore';
-import { TaskUI } from '@/components/ui/Task';
+import { TaskCardContent } from '../TaskCardContent/TaskCardContent';
+import type { TaskCardProps } from './types';
 
-interface TaskCardProps {
-  cardId: string;
-  onClick?: (cardId: string) => void;
-}
+export const TaskCard = memo(
+  ({ cardId, onClick }: TaskCardProps) => {
+    const card = useBoardStore(useCallback(state => state.taskCards[cardId], [cardId]));
 
-export const TaskCard = memo(({ cardId, onClick }: TaskCardProps) => {
-  const card = useBoardStore(state => state.taskCards[cardId]);
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+      id: cardId,
+      data: {
+        type: 'card',
+        card,
+      },
+    });
 
-  const handleClick = useCallback(() => {
-    onClick?.(cardId); // ✅ Вызываем с cardId
-  }, [onClick, cardId]);
+    const handleClick = useCallback(() => {
+      onClick?.(cardId);
+    }, [onClick, cardId]);
 
-  if (!card) return null;
+    const style = useMemo(
+      (): React.CSSProperties => ({
+        opacity: isDragging ? 0.3 : 1,
+        cursor: 'grab',
+        transition: 'opacity 0.2s',
+      }),
+      [isDragging]
+    );
 
-  // Преобразуем данные для TaskUI
-  const taskProps = {
-    title: card.title,
-    description: card.description,
-    assignee:
-      card.assigneIds.length > 0
-        ? {
-            name: `User ${card.assigneIds[0].split('-')[1]}`,
-            avatar: undefined,
-          }
-        : undefined,
-    dueDateText: card.updatedAt ? new Date(card.updatedAt).toLocaleDateString('ru-RU') : undefined,
-    variant: 'compact' as const,
-    interactive: true,
-    onClick: handleClick,
-  };
-  console.log(`card:${cardId}`);
-  return <TaskUI {...taskProps} />;
-});
+    if (!card) return null;
+
+    console.log(`🟨 Card wrapper ${cardId} render`, { isDragging });
+
+    return (
+      <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <TaskCardContent card={card} onClick={handleClick} />
+      </div>
+    );
+  },
+  (prevProps, nextProps) => {
+    return prevProps.cardId === nextProps.cardId && prevProps.onClick === nextProps.onClick;
+  }
+);
 
 TaskCard.displayName = 'TaskCard';
