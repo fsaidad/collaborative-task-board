@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import styles from './Button.module.css';
 import type { ButtonProps } from './types';
 import { cn } from '@/lib/utils';
@@ -20,6 +20,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
+    console.log(` Button render`);
     const buttonClasses = cn(
       styles.button,
       styles[variant],
@@ -56,4 +57,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = 'Button';
 
-export default Button;
+export default memo(Button);

@@ -1,6 +1,7 @@
 import { useBoardStore } from '@/stores/useBoardStore';
 import { memo, useCallback } from 'react';
 import { ColumnUI } from '../ui/Column';
+import { useDroppable } from '@dnd-kit/core';
 
 interface ColumnProps {
   columnId: string;
@@ -8,6 +9,13 @@ interface ColumnProps {
 
 export const Column = memo(
   ({ columnId }: ColumnProps) => {
+    const { setNodeRef, isOver } = useDroppable({
+      id: columnId,
+      data: {
+        type: 'column',
+        columnId,
+      },
+    });
     const column = useBoardStore(state => state.columns[columnId]);
     const cardIds = useBoardStore(state => state.cardsByColumn[columnId] || []);
     const addCard = useBoardStore(state => state.addCard);
@@ -28,13 +36,15 @@ export const Column = memo(
     console.log(`Column ${columnId} render, cardIds:`, cardIds.length);
 
     return (
-      <ColumnUI
-        title={column.title}
-        cardIds={cardIds}
-        cardCount={cardIds.length}
-        onAddCard={handleAddCard}
-        onCardClick={handleCardClick}
-      />
+      <div ref={setNodeRef}>
+        <ColumnUI
+          title={column.title}
+          cardIds={cardIds}
+          cardCount={cardIds.length}
+          onAddCard={handleAddCard}
+          onCardClick={handleCardClick}
+        />
+      </div>
     );
   },
   (prevProps, nextProps) => {
