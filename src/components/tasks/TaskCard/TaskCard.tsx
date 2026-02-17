@@ -5,14 +5,15 @@ import { TaskCardContent } from '../TaskCardContent/TaskCardContent';
 import type { TaskCardProps } from './types';
 
 export const TaskCard = memo(
-  ({ cardId, onClick }: TaskCardProps) => {
+  ({ cardId, onClick, columnId }: TaskCardProps) => {
     const card = useBoardStore(useCallback(state => state.taskCards[cardId], [cardId]));
 
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
       id: cardId,
       data: {
         type: 'card',
-        card,
+        columnId: columnId,
+        cardId,
       },
     });
 
@@ -30,8 +31,6 @@ export const TaskCard = memo(
     );
 
     if (!card) return null;
-
-    console.log(`🟨 Card wrapper ${cardId} render`, { isDragging });
 
     return (
       <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
