@@ -9,4 +9,5 @@ export interface TaskCardProps {
   showPriority?: boolean;
   showAssignee?: boolean;
   showDueDate?: boolean;
+  columnId: string;
 }

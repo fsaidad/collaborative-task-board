@@ -1,7 +1,9 @@
-import { useBoardStore } from '@/stores/useBoardStore';
 import { memo, useCallback } from 'react';
 import { ColumnUI } from '../ui/Column';
-import { useDroppable } from '@dnd-kit/core';
+
+import { TaskCard } from '@/components/tasks/TaskCard/TaskCard';
+import { useBoardStore } from '@/stores/useBoardStore';
+import { CardsDroppableArea } from '../DnDColumnWrapper/CardsDroppableArea';
 
 interface ColumnProps {
   columnId: string;
@@ -9,13 +11,6 @@ interface ColumnProps {
 
 export const Column = memo(
   ({ columnId }: ColumnProps) => {
-    const { setNodeRef, isOver } = useDroppable({
-      id: columnId,
-      data: {
-        type: 'column',
-        columnId,
-      },
-    });
     const column = useBoardStore(state => state.columns[columnId]);
     const cardIds = useBoardStore(state => state.cardsByColumn[columnId] || []);
     const addCard = useBoardStore(state => state.addCard);
@@ -33,18 +28,23 @@ export const Column = memo(
 
     if (!column) return null;
 
-    console.log(`Column ${columnId} render, cardIds:`, cardIds.length);
+    const cardsList = (
+      <CardsDroppableArea columnId={columnId}>
+        {cardIds.map(cardId => (
+          <TaskCard key={cardId} columnId={columnId} cardId={cardId} onClick={handleCardClick} />
+        ))}
+      </CardsDroppableArea>
+    );
 
     return (
-      <div ref={setNodeRef}>
-        <ColumnUI
-          title={column.title}
-          cardIds={cardIds}
-          cardCount={cardIds.length}
-          onAddCard={handleAddCard}
-          onCardClick={handleCardClick}
-        />
-      </div>
+      <ColumnUI
+        title={column.title}
+        cardCount={cardIds.length}
+        onAddCard={handleAddCard}
+        onCardClick={handleCardClick}
+      >
+        {cardsList}
+      </ColumnUI>
     );
   },
   (prevProps, nextProps) => {

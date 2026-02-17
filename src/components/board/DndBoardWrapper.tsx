@@ -22,30 +22,59 @@ export const DndBoardWrapper = () => {
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
 
-    if (over && active.data.current?.type === 'card') {
-      const cardId = active.id as string;
-      const activeCard = active.data.current?.card;
+    if (!over) return;
 
-      let targetColumnId: string;
-      let newIndex: number;
+    const activeData = active.data.current;
+    const overData = over.data.current;
 
-      if (over.data.current?.type === 'card') {
-        targetColumnId = over.data.current?.card.columnId;
-        newIndex = 0;
-      } else {
-        targetColumnId = over.id as string;
-        const targetCards = useBoardStore.getState().cardsByColumn[targetColumnId] || [];
-        newIndex = targetCards.length;
-      }
+    if (activeData?.type !== 'card') return;
 
-      if (activeCard.columnId !== targetColumnId) {
-        useBoardStore.getState().moveCard(cardId, targetColumnId, newIndex);
-      }
+    const cardId = active.id as string;
+
+    const sourceColumnId = activeData.columnId as string;
+
+    let targetColumnId: string | null = null;
+
+    if (overData?.type === 'cards-area') {
+      targetColumnId = overData.columnId as string;
+    } else if (overData?.type === 'card') {
+      targetColumnId = overData.columnId as string;
+    } else if (overData?.type === 'column') {
+      targetColumnId = overData.columnId as string;
+    }
+
+    if (!targetColumnId || !sourceColumnId) {
+      setActiveId(null);
+      return;
+    }
+
+    const state = useBoardStore.getState();
+
+    const card = state.taskCards[cardId];
+    if (!card) {
+      setActiveId(null);
+      return;
+    }
+
+    const targetCards = state.cardsByColumn[targetColumnId] || [];
+
+    let newIndex: number;
+
+    if (overData?.type === 'card') {
+      const overCardId = over.id as string;
+      const overIndex = targetCards.findIndex(id => id === overCardId);
+      newIndex = overIndex;
+    } else {
+      newIndex = targetCards.length;
+    }
+
+    if (sourceColumnId !== targetColumnId) {
+      state.moveCard(cardId, targetColumnId, newIndex);
+    } else {
     }
 
     setActiveId(null);
   }, []);
-
   const memoizedBoard = useMemo(() => <Board />, []);
 
   return (
@@ -63,6 +92,7 @@ export const DndBoardWrapper = () => {
               opacity: 0.9,
               boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
               transform: 'rotate(2deg)',
+              cursor: 'grabbing',
             }}
           >
             <TaskUI
