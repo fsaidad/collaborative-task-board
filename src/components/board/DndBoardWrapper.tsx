@@ -5,6 +5,9 @@ import {
   type DragEndEvent,
   DragOverlay,
   closestCenter,
+  useSensor,
+  useSensors,
+  MouseSensor,
 } from '@dnd-kit/core';
 import { TaskUI } from '@/components/ui/Task';
 import { useBoardStore } from '@/stores/useBoardStore';
@@ -13,6 +16,12 @@ import { Board } from './Board';
 export const DndBoardWrapper = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 5,
+    },
+  });
+  const sensors = useSensors(mouseSensor);
   const taskCards = useBoardStore(state => state.taskCards);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
@@ -79,6 +88,7 @@ export const DndBoardWrapper = () => {
 
   return (
     <DndContext
+      sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}

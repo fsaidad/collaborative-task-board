@@ -1,0 +1,51 @@
+.menuDropdownPortal {
+  min-width: 160px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  padding: 4px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Кнопки в портальном меню */
+.menuDropdownPortal .menuItem {
+  justify-content: flex-start;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #374151;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.menuDropdownPortal .menuItem:hover {
+  background: #f3f4f6;
+}
+
+.menuDropdownPortal .deleteItem {
+  color: #ef4444;
+}
+
+.menuDropdownPortal .deleteItem:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.menuDropdownPortal .deleteItem svg {
+  color: #ef4444;
+}
+
+.menuDropdownPortal .deleteItem:hover svg {
+  color: #dc2626;
+}

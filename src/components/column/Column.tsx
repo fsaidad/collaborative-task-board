@@ -3,7 +3,7 @@ import { ColumnUI } from '../ui/Column';
 
 import { TaskCard } from '@/components/tasks/TaskCard/TaskCard';
 import { useBoardStore } from '@/stores/useBoardStore';
-import { CardsDroppableArea } from '../DnDColumnWrapper/CardsDroppableArea';
+import { CardsDroppableArea } from '../CardsDroppableArea/CardsDroppableArea';
 
 interface ColumnProps {
   columnId: string;
@@ -37,12 +37,7 @@ export const Column = memo(
     );
 
     return (
-      <ColumnUI
-        title={column.title}
-        cardCount={cardIds.length}
-        onAddCard={handleAddCard}
-        onCardClick={handleCardClick}
-      >
+      <ColumnUI title={column.title} cardCount={cardIds.length} onAddCard={handleAddCard}>
         {cardsList}
       </ColumnUI>
     );
