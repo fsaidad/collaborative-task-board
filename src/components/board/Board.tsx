@@ -4,7 +4,6 @@ import { useBoardStore } from '@/stores/useBoardStore';
 import Button from '../ui/Button';
 import { Column } from '../column/Column';
 
-// ⚠️ Это чистый компонент без DnD состояния
 export const Board = () => {
   const columnOrder = useBoardStore(state => state.columnOrder);
   const columns = useBoardStore(state => state.columns);
@@ -22,7 +21,6 @@ export const Board = () => {
     }
   };
 
-  // 🔄 Этот лог будет показывать только когда меняются данные в сторе
   console.log('🟦 Board render (pure)');
 
   return (

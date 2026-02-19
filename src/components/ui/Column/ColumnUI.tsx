@@ -23,9 +23,7 @@ export const ColumnUI = memo(
     return (
       prevProps.title === nextProps.title &&
       prevProps.cardCount === nextProps.cardCount &&
-      prevProps.cardIds === nextProps.cardIds &&
-      prevProps.onAddCard === nextProps.onAddCard &&
-      prevProps.onCardClick === nextProps.onCardClick
+      prevProps.onAddCard === nextProps.onAddCard
     );
   }
 );

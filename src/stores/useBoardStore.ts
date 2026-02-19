@@ -36,6 +36,7 @@ interface BoardStore {
   addCard: (columnId: string, title: string, description?: string) => string;
   updateCard: (cardId: string, updates: Partial<TaskCard>) => void;
   moveCard: (cardId: string, toColumnId: string, newIndex: number) => void;
+  deleteCard: (cardId: string) => void;
 
   // Новые методы для работы с пользователями
   assignUserToCard: (cardId: string, userId: string) => void;
@@ -196,6 +197,29 @@ export const useBoardStore = create<BoardStore>()(
                   ...updates,
                   updatedAt: new Date(),
                 },
+              },
+            };
+          });
+        },
+        deleteCard: cardId => {
+          set(state => {
+            const card = state.taskCards[cardId];
+            if (!card) return state;
+
+            // 1. Удаляем из колонки
+            const columnCards = [...(state.cardsByColumn[card.columnId] || [])];
+            const cardIndex = columnCards.indexOf(cardId);
+            if (cardIndex > -1) columnCards.splice(cardIndex, 1);
+
+            // 2. Удаляем карточку
+            const newTaskCards = { ...state.taskCards };
+            delete newTaskCards[cardId];
+
+            return {
+              taskCards: newTaskCards,
+              cardsByColumn: {
+                ...state.cardsByColumn,
+                [card.columnId]: columnCards,
               },
             };
           });

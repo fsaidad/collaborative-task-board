@@ -2,6 +2,7 @@ import { MessageSquare, Calendar } from 'lucide-react';
 import styles from './TaskUI.module.css';
 import { cn } from '@lib/utils';
 import type { CardProps } from './types';
+import { CardMenu } from '../CardMenu/CardMenu';
 
 export const TaskUI = ({
   title,
@@ -16,6 +17,9 @@ export const TaskUI = ({
   interactive = false,
   className,
   onClick,
+  onEdit,
+  onDelete,
+  onAssign,
   children,
 }: CardProps) => {
   return (
@@ -34,8 +38,11 @@ export const TaskUI = ({
     >
       <div className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
-        {description && <p className={styles.description}>{description}</p>}
+        {/* ✅ Меню с обработчиками */}
+        <CardMenu onEdit={onEdit} onDelete={onDelete} />
       </div>
+
+      {description && <p className={styles.description}>{description}</p>}
 
       {(priority || status) && (
         <div className={styles.meta}>
@@ -47,7 +54,6 @@ export const TaskUI = ({
               <span>{priority.label}</span>
             </div>
           )}
-
           {status && (
             <div className={styles.statusBadge}>
               <span>{status}</span>
@@ -80,7 +86,6 @@ export const TaskUI = ({
                 <span>{commentsCount}</span>
               </div>
             )}
-
             {dueDateText && (
               <div
                 className={cn(styles.dueDate, isOverdue && styles.overdue)}
