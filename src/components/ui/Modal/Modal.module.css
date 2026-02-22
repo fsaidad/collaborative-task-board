@@ -8,8 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  animation: fadeIn 0.2s ease;
+  z-index: var(--z-modal);
+  animation: fadeIn var(--transition-fast);
 }
 
 @keyframes fadeIn {
@@ -22,15 +22,15 @@
 }
 
 .modal {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
   width: 90%;
   max-width: 500px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  animation: slideIn 0.3s ease;
+  animation: slideIn var(--transition-normal);
 }
 
 @keyframes slideIn {
@@ -48,14 +48,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
   margin: 0;
 }
 
@@ -63,29 +63,29 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  color: #6b7280;
+  padding: var(--space-xs);
+  color: var(--color-text-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
 .closeButton:hover {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--color-bg-hover);
+  color: var(--color-text);
 }
 
 .body {
-  padding: 20px;
+  padding: var(--space-lg);
   overflow-y: auto;
   flex: 1;
 }
 
 .footer {
-  padding: 16px 20px;
-  border-top: 1px solid #e5e7eb;
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: var(--space-md);
 }

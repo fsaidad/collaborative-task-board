@@ -74,6 +74,7 @@
 
 .ghost:hover:not(:disabled) {
   background-color: var(--color-bg-hover);
+  border-color: var(--color-border-hover);
 }
 
 .ghost:active:not(:disabled) {

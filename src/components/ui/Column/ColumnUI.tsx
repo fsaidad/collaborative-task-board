@@ -12,7 +12,7 @@ export const ColumnUI = memo(
         </div>
         <div className={styles.cards}>{children}</div>
         <div className={styles.footer}>
-          <Button variant="ghost" size="small" fullWidth onClick={onAddCard}>
+          <Button variant="ghost" size="medium" fullWidth onClick={onAddCard}>
             + Добавить карточку
           </Button>
         </div>

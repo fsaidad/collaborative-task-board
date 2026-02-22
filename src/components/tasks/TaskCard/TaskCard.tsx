@@ -6,8 +6,9 @@ import type { TaskCardProps } from './types';
 
 export const TaskCard = memo(
   ({ cardId, onClick, columnId }: TaskCardProps) => {
+    // получаю именно эту карточку
     const card = useBoardStore(useCallback(state => state.taskCards[cardId], [cardId]));
-
+    //атрибут для доступности, setNodeRef - что бы днд знал что двигаем, listeners - что бы повесить события мыши, isDragging - что бы менять стили во время драга
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
       id: cardId,
       data: {
@@ -33,6 +34,7 @@ export const TaskCard = memo(
     if (!card) return null;
 
     return (
+      // оборачиваю, потому что днд вешается на дом элемент
       <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
         <TaskCardContent card={card} onClick={handleClick} />
       </div>

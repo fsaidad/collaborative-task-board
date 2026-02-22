@@ -1,9 +1,9 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { ColumnUI } from '../ui/Column';
-
 import { TaskCard } from '@/components/tasks/TaskCard/TaskCard';
 import { useBoardStore } from '@/stores/useBoardStore';
 import { CardsDroppableArea } from '../CardsDroppableArea/CardsDroppableArea';
+import { CardModal } from '../tasks/CardModal/CardModal';
 
 interface ColumnProps {
   columnId: string;
@@ -11,16 +11,14 @@ interface ColumnProps {
 
 export const Column = memo(
   ({ columnId }: ColumnProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const column = useBoardStore(state => state.columns[columnId]);
     const cardIds = useBoardStore(state => state.cardsByColumn[columnId] || []);
-    const addCard = useBoardStore(state => state.addCard);
 
     const handleAddCard = useCallback(() => {
-      const title = prompt('Введите название карточки:');
-      if (title?.trim()) {
-        addCard(columnId, title.trim());
-      }
-    }, [addCard, columnId]);
+      setIsModalOpen(true);
+    }, []);
 
     const handleCardClick = useCallback((cardId: string) => {
       console.log('Card clicked:', cardId);
@@ -37,9 +35,17 @@ export const Column = memo(
     );
 
     return (
-      <ColumnUI title={column.title} cardCount={cardIds.length} onAddCard={handleAddCard}>
-        {cardsList}
-      </ColumnUI>
+      <>
+        <ColumnUI title={column.title} cardCount={cardIds.length} onAddCard={handleAddCard}>
+          {cardsList}
+        </ColumnUI>
+        <CardModal
+          initialMode="create"
+          columnId={columnId}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </>
     );
   },
   (prevProps, nextProps) => {

@@ -2,14 +2,14 @@ import { memo, useCallback, useState } from 'react';
 import { TaskUI } from '@/components/ui/Task';
 import type { TaskCardContentProps } from './types';
 import { useBoardStore } from '@/stores/useBoardStore';
-import { EditCardModal } from '../EditTaskModal/EditTaskModal';
 import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal/ConfirmDeleteModal';
+import { CardModal } from '../CardModal/CardModal';
 
 export const TaskCardContent = memo(
-  ({ card, onClick, onEdit, onDelete, onAssign }: TaskCardContentProps) => {
-    console.log(`📦 Content render for card ${card.id}`);
+  ({ card, onClick, onAssign }: TaskCardContentProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view');
 
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const firstAssigneeId = card.assigneIds[0];
@@ -25,23 +25,31 @@ export const TaskCardContent = memo(
       )
     );
 
-    const handleEdit = () => {
-      setIsEditModalOpen(true);
-    };
+    const handleCardClick = useCallback(() => {
+      setModalMode('view');
+      setIsModalOpen(true);
+      onClick?.(card.id);
+    }, [card.id, onClick]);
 
-    const handleDelete = () => {
+    const handleEdit = useCallback(() => {
+      setModalMode('edit');
+      setIsModalOpen(true);
+    }, []);
+
+    const handleDelete = useCallback(() => {
       setIsDeleteModalOpen(true);
-    };
+    }, []);
 
-    const confirmDelete = () => {
+    const confirmDelete = useCallback(() => {
       deleteCard(card.id);
-    };
+      setIsDeleteModalOpen(false);
+    }, [card.id, deleteCard]);
 
+    // Назначение (временно через prompt)
     const handleAssign = useCallback(() => {
       if (onAssign) {
         onAssign(card.id);
       } else {
-        // Временное решение через prompt
         const availableUsers = Object.values(users)
           .map(u => `${u.id} (${u.name})`)
           .join(', ');
@@ -66,7 +74,7 @@ export const TaskCardContent = memo(
         : undefined,
       variant: 'compact' as const,
       interactive: true,
-      onClick: () => onClick?.(card.id),
+      onClick: handleCardClick,
       onEdit: handleEdit,
       onDelete: handleDelete,
       onAssign: handleAssign,
@@ -74,12 +82,13 @@ export const TaskCardContent = memo(
 
     return (
       <>
-        {' '}
-        <TaskUI {...taskProps} />{' '}
-        <EditCardModal
+        <TaskUI {...taskProps} />
+
+        <CardModal
+          initialMode={modalMode}
           cardId={card.id}
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
         />
         <ConfirmDeleteModal
           isOpen={isDeleteModalOpen}
@@ -92,7 +101,6 @@ export const TaskCardContent = memo(
     );
   },
   (prevProps, nextProps) => {
-    // Оптимизация ререндеров
     return (
       prevProps.card.id === nextProps.card.id &&
       prevProps.card.title === nextProps.card.title &&
