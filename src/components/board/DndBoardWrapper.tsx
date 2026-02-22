@@ -79,7 +79,6 @@ export const DndBoardWrapper = () => {
 
     if (sourceColumnId !== targetColumnId) {
       state.moveCard(cardId, targetColumnId, newIndex);
-    } else {
     }
 
     setActiveId(null);

@@ -19,6 +19,5 @@ export interface CardProps {
   onClick?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
-  onAssign?: () => void;
   children?: React.ReactNode;
 }

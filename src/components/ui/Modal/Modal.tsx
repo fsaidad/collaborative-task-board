@@ -1,3 +1,5 @@
+//Нужно будет состояние модалки в стор запихать, потому что мне днд стоит выключать при вызове модалки, никак иначе не получится видимо пофиксить клики
+
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
@@ -12,31 +14,24 @@ interface ModalProps {
 }
 
 export const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) => {
-  // Блокируем скролл body, когда модалка открыта
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-  // Закрытие по Escape
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
-
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
     }
-
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
@@ -45,12 +40,14 @@ export const Modal = ({ isOpen, onClose, title, children, footer }: ModalProps) 
   if (!isOpen) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
-      <div
-        className={styles.modal}
-        onClick={e => e.stopPropagation()}
-        onMouseDown={handleMouseDown}
-      >
+    <div
+      className={styles.overlay}
+      onClick={onClose}
+      onMouseDown={e => {
+        e.stopPropagation();
+      }}
+    >
+      <div className={styles.modal} onClick={e => e.stopPropagation()}>
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
           <button className={styles.closeButton} onClick={onClose}>

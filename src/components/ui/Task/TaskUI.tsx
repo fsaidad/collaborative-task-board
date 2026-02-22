@@ -19,7 +19,6 @@ export const TaskUI = ({
   onClick,
   onEdit,
   onDelete,
-  onAssign,
   children,
 }: CardProps) => {
   return (
@@ -38,7 +37,6 @@ export const TaskUI = ({
     >
       <div className={styles.header}>
         <h3 className={styles.title}>{title}</h3>
-        {/* ✅ Меню с обработчиками */}
         <CardMenu onEdit={onEdit} onDelete={onDelete} />
       </div>
 

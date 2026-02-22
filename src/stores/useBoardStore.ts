@@ -1,54 +1,55 @@
+// просто импорты
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
+// данные пользователя
 export interface User {
   id: string;
   name: string;
   email: string;
-  avatar?: string | null;
+  avatar?: string | null; //строка либо нуль либо андефайнд, не знаю почему?
 }
 
+// данные карточки (Нужно будет рассширить)
 export interface TaskCard {
   id: string;
   title: string;
   description?: string;
-  assigneIds: string[]; // опечатка, но пока оставим как есть
+  assigneIds: string[];
   columnId: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
+// данные колонки
 export interface Column {
   id: string;
   title: string;
-  order?: number; // Добавим order для сортировки колонок
+  order?: number;
 }
 
+// интерфейс стора, какие поля хранит, какие методы имеет.
 interface BoardStore {
+  // данные типа ключ - значение
   columns: Record<string, Column>;
   taskCards: Record<string, TaskCard>;
-  users: Record<string, User>; // Добавляем пользователей
+  users: Record<string, User>;
 
   cardsByColumn: Record<string, string[]>;
   columnOrder: string[];
-
+  // методы
   addColumn: (title: string) => void;
-  addCard: (columnId: string, title: string, description?: string) => string;
+  addCard: (columnId: string, title: string, description?: string, assigneIds?: string[]) => string;
   updateCard: (cardId: string, updates: Partial<TaskCard>) => void;
   moveCard: (cardId: string, toColumnId: string, newIndex: number) => void;
   deleteCard: (cardId: string) => void;
-
-  // Новые методы для работы с пользователями
-  assignUserToCard: (cardId: string, userId: string) => void;
-  removeUserFromCard: (cardId: string, userId: string) => void;
-  getUsersForCard: (cardId: string) => User[];
-  getUserById: (userId: string) => User | undefined;
 }
-
+// стор
 export const useBoardStore = create<BoardStore>()(
   devtools(
     persist(
       (set, get) => ({
+        //моковые пользователи
         users: {
           'user-1': {
             id: 'user-1',
@@ -75,7 +76,7 @@ export const useBoardStore = create<BoardStore>()(
             avatar: undefined,
           },
         },
-
+        //моковые колонки
         columns: {
           '1': {
             id: '1',
@@ -93,13 +94,13 @@ export const useBoardStore = create<BoardStore>()(
             order: 2,
           },
         },
-
+        // карточки задач
         taskCards: {
           'task-1': {
             id: 'task-1',
             title: 'Инициализация проекта',
             description: 'Создать базовую структуру проекта React + TypeScript',
-            assigneIds: ['user-1', 'user-2'], // Анна и Иван
+            assigneIds: ['user-1', 'user-2'],
             columnId: '3',
             createdAt: new Date('2024-01-10'),
             updatedAt: new Date('2024-01-12'),
@@ -108,7 +109,7 @@ export const useBoardStore = create<BoardStore>()(
             id: 'task-2',
             title: 'Настроить Zustand store',
             description: 'Реализовать глобальное состояние для управления доской задач',
-            assigneIds: ['user-3'], // Только Мария
+            assigneIds: ['user-3'],
             columnId: '3',
             createdAt: new Date('2024-01-11'),
             updatedAt: new Date('2024-01-15'),
@@ -117,51 +118,64 @@ export const useBoardStore = create<BoardStore>()(
             id: 'task-3',
             title: 'Drag and Drop функционал',
             description: 'Добавить возможность перетаскивания карточек между колонками',
-            assigneIds: ['user-1', 'user-4'], // Анна и Петр
+            assigneIds: ['user-1', 'user-4'],
             columnId: '2',
             createdAt: new Date('2024-01-12'),
             updatedAt: new Date('2024-01-16'),
           },
         },
-
+        //какие карточки какой колонке принадлежат
         cardsByColumn: {
           '1': [],
           '2': ['task-3'],
           '3': ['task-1', 'task-2'],
         },
+        // порядок колнок (Нужно для оптимизации перемещения колонок)
         columnOrder: ['1', '2', '3'],
 
+        // метод для добавления колонок
         addColumn(title: string) {
+          // имитация какого то айди p.s. НУЖНО БУДЕТ ИСПОЛЬЗОВАТЬ ЧТО ТО БОЛЕЕ НАДЕЖНОЕ НАПРИМЕР nanoid
           const columnId = `col-${Date.now()}`;
-          set(state => {
-            const newOrder = Object.keys(state.columns).length;
 
+          set(state => {
+            // получаю текущее состояние
+            //место новой колонки,  такой метод потому что не массив
+            const newOrder = Object.keys(state.columns).length;
+            //возвращаю новый объект состояния
             return {
               columns: {
-                ...state.columns,
+                // обновляю колонки
+                ...state.columns, // копирую старые колонки
                 [columnId]: {
+                  // добавляю новую ключ - columnId, значение объект с полями id, title, order
                   id: columnId,
                   title,
                   order: newOrder,
                 },
               },
+              //обновляю карточки колонки
               cardsByColumn: {
                 ...state.cardsByColumn,
                 [columnId]: [],
               },
+              // добавляю айди в порядок колонок
               columnOrder: [...state.columnOrder, columnId],
             };
           });
         },
-
-        addCard(columnId: string, title: string, description?: string) {
+        // метод для добавления карточек (Позже нужно будет расширить, для приоритета, комментариев)
+        addCard(columnId: string, title: string, description?: string, assigneIds: string[] = []) {
           const cardId = `card-${Date.now()}`;
+          // дата создания карточки
           const now = new Date();
 
           set(state => {
+            //получаю карточки которые находятся в колонке
             const currentCardsInColumn = state.cardsByColumn[columnId] || [];
 
             return {
+              // обновляю карточки
               taskCards: {
                 ...state.taskCards,
                 [cardId]: {
@@ -169,11 +183,12 @@ export const useBoardStore = create<BoardStore>()(
                   title,
                   columnId,
                   description,
-                  assigneIds: [],
+                  assigneIds,
                   createdAt: now,
                   updatedAt: now,
                 },
               },
+              // обновляю состояние карточек в колонке, добавляю новое id
               cardsByColumn: {
                 ...state.cardsByColumn,
                 [columnId]: [...currentCardsInColumn, cardId],
@@ -183,12 +198,13 @@ export const useBoardStore = create<BoardStore>()(
 
           return cardId;
         },
-
+        // метод обновления карточки
         updateCard: (cardId: string, updates: Partial<TaskCard>) => {
           set(state => {
+            // получаю состояние карточки по id
             const card = state.taskCards[cardId];
             if (!card) return state;
-
+            // возвращаю новое состояние
             return {
               taskCards: {
                 ...state.taskCards,
@@ -201,17 +217,19 @@ export const useBoardStore = create<BoardStore>()(
             };
           });
         },
+
+        // метод удаления карточки
         deleteCard: cardId => {
           set(state => {
+            //получаю по айди
             const card = state.taskCards[cardId];
             if (!card) return state;
 
-            // 1. Удаляем из колонки
             const columnCards = [...(state.cardsByColumn[card.columnId] || [])];
+            // ищу место карточки
             const cardIndex = columnCards.indexOf(cardId);
             if (cardIndex > -1) columnCards.splice(cardIndex, 1);
 
-            // 2. Удаляем карточку
             const newTaskCards = { ...state.taskCards };
             delete newTaskCards[cardId];
 
@@ -224,34 +242,24 @@ export const useBoardStore = create<BoardStore>()(
             };
           });
         },
-
+        // метод перемещения карточки расчитан сразу на то что карточку можно будет на определенное место переместить а не только в конец
         moveCard: (cardId: string, toColumnId: string, newIndex: number) => {
           set(state => {
             const card = state.taskCards[cardId];
             if (!card) return state;
-
+            // колонка из которой берется карточка
             const fromColumnId = card.columnId;
 
-            // Не перемещаем, если колонка та же и индекс не меняется
-            if (fromColumnId === toColumnId) {
-              const currentIndex = state.cardsByColumn[fromColumnId].indexOf(cardId);
-              if (currentIndex === newIndex) return state;
-            }
-
-            // Копируем индексы
             const newCardsByColumn = { ...state.cardsByColumn };
 
-            // Удаляем из старой колонки
             newCardsByColumn[fromColumnId] = newCardsByColumn[fromColumnId].filter(
               id => id !== cardId
             );
 
-            // Вставляем в новую колонку
             const toArray = [...(newCardsByColumn[toColumnId] || [])];
             toArray.splice(newIndex, 0, cardId);
             newCardsByColumn[toColumnId] = toArray;
 
-            // Обновляем карточку
             const newTaskCards = {
               ...state.taskCards,
               [cardId]: {
@@ -266,55 +274,6 @@ export const useBoardStore = create<BoardStore>()(
               cardsByColumn: newCardsByColumn,
             };
           });
-        },
-
-        // Новые методы для работы с пользователями
-        assignUserToCard: (cardId: string, userId: string) => {
-          set(state => {
-            const card = state.taskCards[cardId];
-            if (!card) return state;
-            if (card.assigneIds.includes(userId)) return state;
-
-            return {
-              taskCards: {
-                ...state.taskCards,
-                [cardId]: {
-                  ...card,
-                  assigneIds: [...card.assigneIds, userId],
-                  updatedAt: new Date(),
-                },
-              },
-            };
-          });
-        },
-
-        removeUserFromCard: (cardId: string, userId: string) => {
-          set(state => {
-            const card = state.taskCards[cardId];
-            if (!card) return state;
-
-            return {
-              taskCards: {
-                ...state.taskCards,
-                [cardId]: {
-                  ...card,
-                  assigneIds: card.assigneIds.filter(id => id !== userId),
-                  updatedAt: new Date(),
-                },
-              },
-            };
-          });
-        },
-
-        getUsersForCard: (cardId: string) => {
-          const card = get().taskCards[cardId];
-          if (!card) return [];
-
-          return card.assigneIds.map(id => get().users[id]).filter(Boolean);
-        },
-
-        getUserById: (userId: string) => {
-          return get().users[userId];
         },
       }),
       {

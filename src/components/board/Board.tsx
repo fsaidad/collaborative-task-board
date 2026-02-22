@@ -1,13 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import styles from './Board.module.css';
 import { useBoardStore } from '@/stores/useBoardStore';
 import Button from '../ui/Button';
 import { Column } from '../column/Column';
+import { AddColumnModal } from '../column/AddColumnModal/AddColumnModal';
 
 export const Board = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const columnOrder = useBoardStore(state => state.columnOrder);
   const columns = useBoardStore(state => state.columns);
-  const addColumn = useBoardStore(state => state.addColumn);
 
   const columnsArray = useMemo(
     () => columnOrder.map(id => columns[id]).filter(Boolean),
@@ -15,10 +16,7 @@ export const Board = () => {
   );
 
   const handleAddColumn = () => {
-    const title = prompt('Введите название колонки:');
-    if (title?.trim()) {
-      addColumn(title.trim());
-    }
+    setIsModalOpen(true);
   };
 
   console.log('🟦 Board render (pure)');
@@ -40,6 +38,7 @@ export const Board = () => {
           </Button>
         </div>
       </div>
+      <AddColumnModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };
