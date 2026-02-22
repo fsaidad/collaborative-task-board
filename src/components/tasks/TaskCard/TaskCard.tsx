@@ -1,0 +1,48 @@
+import { memo, useCallback, useMemo } from 'react';
+import { useDraggable } from '@dnd-kit/core';
+import { useBoardStore } from '@/stores/useBoardStore';
+import { TaskCardContent } from '../TaskCardContent/TaskCardContent';
+import type { TaskCardProps } from './types';
+
+export const TaskCard = memo(
+  ({ cardId, onClick, columnId }: TaskCardProps) => {
+    // получаю именно эту карточку
+    const card = useBoardStore(useCallback(state => state.taskCards[cardId], [cardId]));
+    //атрибут для доступности, setNodeRef - что бы днд знал что двигаем, listeners - что бы повесить события мыши, isDragging - что бы менять стили во время драга
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+      id: cardId,
+      data: {
+        type: 'card',
+        columnId: columnId,
+        cardId,
+      },
+    });
+
+    const handleClick = useCallback(() => {
+      onClick?.(cardId);
+    }, [onClick, cardId]);
+
+    const style = useMemo(
+      (): React.CSSProperties => ({
+        opacity: isDragging ? 0.3 : 1,
+        cursor: 'grab',
+        transition: 'opacity 0.2s',
+      }),
+      [isDragging]
+    );
+
+    if (!card) return null;
+
+    return (
+      // оборачиваю, потому что днд вешается на дом элемент
+      <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <TaskCardContent card={card} onClick={handleClick} />
+      </div>
+    );
+  },
+  (prevProps, nextProps) => {
+    return prevProps.cardId === nextProps.cardId && prevProps.onClick === nextProps.onClick;
+  }
+);
+
+TaskCard.displayName = 'TaskCard';

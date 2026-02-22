@@ -1,12 +1,8 @@
-import './styles/global.css';
+import '@styles/global.css';
+import { DndBoardWrapper } from '../board/DndBoardWrapper';
 
 function App() {
-  return (
-    <div>
-      <h1>Task Board</h1>
-      <p>Проект запущен и готов к разработке!</p>
-    </div>
-  );
+  return <DndBoardWrapper />;
 }
 
 export default App;
