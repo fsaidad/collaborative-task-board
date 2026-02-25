@@ -3,12 +3,23 @@ import styles from './Column.module.css';
 import Button from '../Button';
 import type { ColumnUIProps } from '.';
 export const ColumnUI = memo(
-  ({ title, cardCount, onAddCard, className, children }: ColumnUIProps) => {
+  ({ title, cardCount, onAddCard, onDelete, className, children }: ColumnUIProps) => {
     return (
       <div className={`${styles.column}  ${className || ''}`}>
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
-          <span className={styles.cardCount}>({cardCount})</span>
+          <span className={styles.cardCount}>{cardCount}</span>
+          {onDelete && (
+            <Button
+              variant="ghost"
+              size="small"
+              onClick={onDelete}
+              className={styles.deleteButton}
+              aria-label="Удалить колонку"
+            >
+              х
+            </Button>
+          )}
         </div>
         <div className={styles.cards}>{children}</div>
         <div className={styles.footer}>
