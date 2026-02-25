@@ -4,6 +4,7 @@ export interface ColumnUIProps {
   cardCount: number;
   onAddCard: () => void;
   // onCardClick: (cardId: string) => void;
+  onDelete?: () => void;
   className?: string;
   isOver?: boolean;
   children: React.ReactNode;

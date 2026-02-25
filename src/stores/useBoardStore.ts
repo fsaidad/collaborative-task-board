@@ -39,6 +39,7 @@ interface BoardStore {
   columnOrder: string[];
   // методы
   addColumn: (title: string) => void;
+  deleteColumn: (columnId: string) => void;
   addCard: (columnId: string, title: string, description?: string, assigneIds?: string[]) => string;
   updateCard: (cardId: string, updates: Partial<TaskCard>) => void;
   moveCard: (cardId: string, toColumnId: string, newIndex: number) => void;
@@ -161,6 +162,39 @@ export const useBoardStore = create<BoardStore>()(
               },
               // добавляю айди в порядок колонок
               columnOrder: [...state.columnOrder, columnId],
+            };
+          });
+        },
+        deleteColumn: (columnId: string) => {
+          set(state => {
+            // Проверяем, существует ли колонка
+            if (!state.columns[columnId]) return state;
+
+            // Получаем все карточки из удаляемой колонки
+            const cardsToDelete = state.cardsByColumn[columnId] || [];
+
+            // Создаем новые объекты без удаляемой колонки и её карточек
+            const newColumns = { ...state.columns };
+            delete newColumns[columnId];
+
+            const newCardsByColumn = { ...state.cardsByColumn };
+            delete newCardsByColumn[columnId];
+
+            const newTaskCards = { ...state.taskCards };
+
+            // Удаляем все карточки из этой колонки
+            cardsToDelete.forEach(cardId => {
+              delete newTaskCards[cardId];
+            });
+
+            // Удаляем columnId из порядка колонок
+            const newColumnOrder = state.columnOrder.filter(id => id !== columnId);
+
+            return {
+              columns: newColumns,
+              taskCards: newTaskCards,
+              cardsByColumn: newCardsByColumn,
+              columnOrder: newColumnOrder,
             };
           });
         },
