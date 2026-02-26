@@ -59,7 +59,7 @@ export const Column = memo(
           onConfirm={handleConfirmDelete}
           title="Удаление колонки"
           itemName={column.title}
-          message={`В колонке ${cardIds.length} карточек. Они будут удалены вместе с колонкой.`}
+          message={`Колонка будет удалена вместе с задачами внутри неё!`}
         />
         <CardModal
           initialMode="create"

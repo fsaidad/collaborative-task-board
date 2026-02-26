@@ -4,11 +4,12 @@
   width: 280px;
   min-height: 400px;
   max-height: 80vh;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-card);
   border-radius: var(--radius-lg);
   padding: var(--space-md);
   gap: var(--space-md);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
 }
 
 .cardsOver {

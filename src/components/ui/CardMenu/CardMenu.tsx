@@ -13,7 +13,6 @@ interface CardMenuProps {
 export const CardMenu = ({ onEdit, onDelete, className }: CardMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, right: 0 });
-
   const buttonRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
