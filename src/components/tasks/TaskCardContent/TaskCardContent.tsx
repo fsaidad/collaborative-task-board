@@ -6,18 +6,14 @@ import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal/ConfirmDe
 import { CardModal } from '../CardModal/CardModal';
 
 export const TaskCardContent = memo(
-  ({ card, onClick, onAssign }: TaskCardContentProps) => {
+  ({ card, onClick }: TaskCardContentProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState<'view' | 'edit' | 'create'>('view');
 
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
     const firstAssigneeId = card.assigneIds[0];
     const deleteCard = useBoardStore(state => state.deleteCard);
-    const updateCard = useBoardStore(state => state.updateCard);
-    const users = useBoardStore(state => state.users);
 
-    // Получаем исполнителя
     const mainAssignee = useBoardStore(
       useCallback(
         state => (firstAssigneeId ? state.users[firstAssigneeId] : undefined),
@@ -45,24 +41,6 @@ export const TaskCardContent = memo(
       setIsDeleteModalOpen(false);
     }, [card.id, deleteCard]);
 
-    // Назначение (временно через prompt)
-    const handleAssign = useCallback(() => {
-      if (onAssign) {
-        onAssign(card.id);
-      } else {
-        const availableUsers = Object.values(users)
-          .map(u => `${u.id} (${u.name})`)
-          .join(', ');
-
-        const userId = prompt(`Назначить пользователя (доступны: ${availableUsers}):`);
-        if (userId && users[userId] && !card.assigneIds.includes(userId)) {
-          updateCard(card.id, {
-            assigneIds: [...card.assigneIds, userId],
-          });
-        }
-      }
-    }, [card.id, card.assigneIds, onAssign, users, updateCard]);
-
     const taskProps = {
       title: card.title,
       description: card.description,
@@ -77,7 +55,6 @@ export const TaskCardContent = memo(
       onClick: handleCardClick,
       onEdit: handleEdit,
       onDelete: handleDelete,
-      onAssign: handleAssign,
     };
 
     return (

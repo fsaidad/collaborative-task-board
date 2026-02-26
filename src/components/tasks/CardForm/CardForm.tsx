@@ -35,7 +35,7 @@ export const CardForm = ({ mode, cardId, columnId, onSuccess, onCancel }: CardFo
   }, [mode, card]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // ← важно!
+    e.preventDefault();
     if (!title.trim()) return;
 
     if (mode === 'edit' && cardId) {
