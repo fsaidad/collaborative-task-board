@@ -19,8 +19,6 @@ export const Board = () => {
     setIsModalOpen(true);
   };
 
-  console.log('🟦 Board render (pure)');
-
   return (
     <div className={styles.board}>
       <div className={styles.header}>
