@@ -1,4 +1,3 @@
-// просто импорты
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
@@ -7,9 +6,14 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  avatar?: string | null; //строка либо нуль либо андефайнд, не знаю почему?
+  avatar?: string | null;
 }
+export type PriorityLevel = 'low' | 'medium' | 'high';
 
+export interface Priority {
+  level: PriorityLevel;
+  label: string;
+}
 // данные карточки (Нужно будет рассширить)
 export interface TaskCard {
   id: string;
@@ -19,6 +23,7 @@ export interface TaskCard {
   columnId: string;
   createdAt?: Date;
   updatedAt?: Date;
+  priority?: Priority;
 }
 
 // данные колонки
@@ -40,7 +45,13 @@ interface BoardStore {
   // методы
   addColumn: (title: string) => void;
   deleteColumn: (columnId: string) => void;
-  addCard: (columnId: string, title: string, description?: string, assigneIds?: string[]) => string;
+  addCard: (
+    columnId: string,
+    title: string,
+    description?: string,
+    assigneIds?: string[],
+    priority?: Priority
+  ) => string;
   updateCard: (cardId: string, updates: Partial<TaskCard>) => void;
   moveCard: (cardId: string, toColumnId: string, newIndex: number) => void;
   deleteCard: (cardId: string) => void;
@@ -105,6 +116,7 @@ export const useBoardStore = create<BoardStore>()(
             columnId: '3',
             createdAt: new Date('2024-01-10'),
             updatedAt: new Date('2024-01-12'),
+            priority: { level: 'medium', label: 'Средний' },
           },
           'task-2': {
             id: 'task-2',
@@ -114,6 +126,7 @@ export const useBoardStore = create<BoardStore>()(
             columnId: '3',
             createdAt: new Date('2024-01-11'),
             updatedAt: new Date('2024-01-15'),
+            priority: { level: 'high', label: 'Высокий' },
           },
           'task-3': {
             id: 'task-3',
@@ -123,6 +136,7 @@ export const useBoardStore = create<BoardStore>()(
             columnId: '2',
             createdAt: new Date('2024-01-12'),
             updatedAt: new Date('2024-01-16'),
+            priority: { level: 'low', label: 'Низкий' },
           },
         },
         //какие карточки какой колонке принадлежат
@@ -199,7 +213,13 @@ export const useBoardStore = create<BoardStore>()(
           });
         },
         // метод для добавления карточек (Позже нужно будет расширить, для приоритета, комментариев)
-        addCard(columnId: string, title: string, description?: string, assigneIds: string[] = []) {
+        addCard(
+          columnId: string,
+          title: string,
+          description?: string,
+          assigneIds: string[] = [],
+          priority?: Priority
+        ) {
           const cardId = `card-${Date.now()}`;
           // дата создания карточки
           const now = new Date();
@@ -220,6 +240,7 @@ export const useBoardStore = create<BoardStore>()(
                   assigneIds,
                   createdAt: now,
                   updatedAt: now,
+                  priority: priority || { level: 'medium', label: 'Средний' },
                 },
               },
               // обновляю состояние карточек в колонке, добавляю новое id

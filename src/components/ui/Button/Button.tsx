@@ -20,7 +20,6 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    console.log(` Button render`);
     const buttonClasses = cn(
       styles.button,
       styles[variant],

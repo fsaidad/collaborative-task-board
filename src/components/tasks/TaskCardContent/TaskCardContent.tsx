@@ -55,6 +55,7 @@ export const TaskCardContent = memo(
       onClick: handleCardClick,
       onEdit: handleEdit,
       onDelete: handleDelete,
+      priority: card.priority,
     };
 
     return (
@@ -85,8 +86,7 @@ export const TaskCardContent = memo(
       prevProps.card.assigneIds.length === nextProps.card.assigneIds.length &&
       prevProps.card.updatedAt === nextProps.card.updatedAt &&
       prevProps.onEdit === nextProps.onEdit &&
-      prevProps.onDelete === nextProps.onDelete &&
-      prevProps.onAssign === nextProps.onAssign
+      prevProps.onDelete === nextProps.onDelete
     );
   }
 );
