@@ -14,6 +14,12 @@ export interface Priority {
   level: PriorityLevel;
   label: string;
 }
+export const PRIORITY_OPTIONS: Priority[] = [
+  { level: 'low', label: 'Низкий' },
+  { level: 'medium', label: 'Средний' },
+  { level: 'high', label: 'Высокий' },
+];
+
 // данные карточки (Нужно будет рассширить)
 export interface TaskCard {
   id: string;
