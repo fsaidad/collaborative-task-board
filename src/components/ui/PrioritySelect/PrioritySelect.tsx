@@ -3,6 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import styles from './PrioritySelect.module.css';
 import { cn } from '@/lib/utils';
 import { type Priority, PRIORITY_OPTIONS } from '@/stores/useBoardStore';
+import Button from '../Button';
 
 interface PrioritySelectProps {
   value?: Priority;
@@ -32,30 +33,41 @@ export const PrioritySelect = ({ value, onChange }: PrioritySelectProps) => {
   return (
     <div className={styles.container} ref={ref}>
       <label className={styles.label}>Приоритет</label>
-      <button
+      <Button
         type="button"
-        className={cn(styles.trigger, value && styles[`priority-${value.level}`])}
+        variant="secondary"
+        size="medium"
+        icon={ChevronDown}
+        iconPosition="right"
+        className={cn(
+          styles.trigger,
+          value && styles[`priority-${value.level}`],
+          isOpen && styles.open
+        )}
         onClick={() => setIsOpen(!isOpen)}
+        fullWidth
       >
         <span>{value ? value.label : 'Выберите приоритет'}</span>
-        <ChevronDown size={16} className={cn(styles.arrow, isOpen && styles.open)} />
-      </button>
+      </Button>
 
       {isOpen && (
         <div className={styles.dropdown}>
           {PRIORITY_OPTIONS.map(priority => (
-            <button
+            <Button
               key={priority.level}
               type="button"
+              variant="ghost"
+              size="small"
               className={cn(
                 styles.option,
                 styles[`priority-${priority.level}`],
                 value?.level === priority.level && styles.selected
               )}
               onClick={() => handleSelect(priority)}
+              fullWidth
             >
               {priority.label}
-            </button>
+            </Button>
           ))}
         </div>
       )}
