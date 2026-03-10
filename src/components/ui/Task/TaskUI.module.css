@@ -70,6 +70,7 @@
 
 .meta {
   display: flex;
+  justify-content: end;
   flex-wrap: wrap;
   gap: var(--space-xs);
   align-items: center;

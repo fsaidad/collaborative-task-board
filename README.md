@@ -16,10 +16,10 @@ Trello-like collaborative task management board built with modern web technologi
 
 ### MVP (In Progress)
 
-- [ ] Create boards, lists, and cards
-- [ ] Drag & drop cards between lists
-- [ ] Assign users to tasks
-- [ ] Set priorities and deadlines
+- [+] Create boards, lists, and cards
+- [+] Drag & drop cards between lists
+- [+] Assign users to tasks
+- [+-] Set priorities and deadlines
 - [ ] Filter and search tasks
 
 ### Planned

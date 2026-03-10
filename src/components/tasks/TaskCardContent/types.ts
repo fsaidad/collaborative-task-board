@@ -5,5 +5,4 @@ export interface TaskCardContentProps {
   onClick?: (cardId: string) => void;
   onEdit?: (cardId: string) => void;
   onDelete?: (cardId: string) => void;
-  onAssign?: (cardId: string) => void;
 }

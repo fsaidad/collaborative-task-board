@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button/Button';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore, type Priority } from '@/stores/useBoardStore';
 import styles from './CardForm.module.css';
+import { PrioritySelect } from '@/components/ui/PrioritySelect/PrioritySelect';
 
 interface CardFormProps {
   mode: 'edit' | 'create';
@@ -22,15 +23,19 @@ export const CardForm = ({ mode, cardId, columnId, onSuccess, onCancel }: CardFo
   const [description, setDescription] = useState('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
 
+  const [priority, setPriority] = useState<Priority>({ level: 'medium', label: 'Средний' });
+
   useEffect(() => {
     if (mode === 'edit' && card) {
       setTitle(card.title || '');
       setDescription(card.description || '');
       setSelectedUsers(card.assigneIds || []);
+      setPriority(card.priority || { level: 'medium', label: 'Средний' });
     } else {
       setTitle('');
       setDescription('');
       setSelectedUsers([]);
+      setPriority({ level: 'medium', label: 'Средний' });
     }
   }, [mode, card]);
 
@@ -43,9 +48,10 @@ export const CardForm = ({ mode, cardId, columnId, onSuccess, onCancel }: CardFo
         title: title.trim(),
         description: description.trim() || undefined,
         assigneIds: selectedUsers,
+        priority: priority,
       });
     } else if (mode === 'create' && columnId) {
-      addCard(columnId, title.trim(), description.trim() || undefined, selectedUsers);
+      addCard(columnId, title.trim(), description.trim() || undefined, selectedUsers, priority);
     }
 
     onSuccess();
@@ -78,6 +84,10 @@ export const CardForm = ({ mode, cardId, columnId, onSuccess, onCancel }: CardFo
           rows={4}
           autoComplete="off"
         />
+      </div>
+
+      <div className={styles.field}>
+        <PrioritySelect value={priority} onChange={setPriority} />
       </div>
 
       <div className={styles.field}>
