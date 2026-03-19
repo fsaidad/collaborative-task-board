@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { ColumnUI } from '../ui/Column';
 import { TaskCard } from '@/components/tasks/TaskCard/TaskCard';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import { CardsDroppableArea } from '../CardsDroppableArea/CardsDroppableArea';
 import { CardModal } from '../tasks/CardModal/CardModal';
 import { ConfirmDeleteModal } from '../ui/ConfirmDeleteModal/ConfirmDeleteModal';

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import styles from './PrioritySelect.module.css';
 import { cn } from '@/lib/utils';
-import { type Priority, PRIORITY_OPTIONS } from '@/stores/useBoardStore';
+import { type Priority, PRIORITY_OPTIONS } from '@/stores/index';
 import Button from '../Button';
 
 interface PrioritySelectProps {

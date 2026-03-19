@@ -1,7 +1,7 @@
 import { memo, useCallback, useState } from 'react';
 import { TaskUI } from '@/components/ui/Task';
 import type { TaskCardContentProps } from './types';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import { ConfirmDeleteModal } from '@/components/ui/ConfirmDeleteModal/ConfirmDeleteModal';
 import { CardModal } from '../CardModal/CardModal';
 

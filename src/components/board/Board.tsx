@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import styles from './Board.module.css';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import Button from '../ui/Button';
 import { Column } from '../column/Column';
 import { AddColumnModal } from '../column/AddColumnModal/AddColumnModal';

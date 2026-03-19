@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Modal } from '@/components/ui/Modal/Modal';
 import Button from '@/components/ui/Button/Button';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import styles from './AddColumnModal.module.css';
 
 interface AddColumnModalProps {

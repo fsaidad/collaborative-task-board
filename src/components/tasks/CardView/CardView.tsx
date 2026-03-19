@@ -1,4 +1,4 @@
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import Button from '@/components/ui/Button/Button';
 import { Edit2 } from 'lucide-react';
 import styles from './CardView.module.css';

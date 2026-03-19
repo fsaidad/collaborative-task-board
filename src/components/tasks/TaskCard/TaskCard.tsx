@@ -1,6 +1,6 @@
 import { memo, useCallback, useMemo } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import { TaskCardContent } from '../TaskCardContent/TaskCardContent';
 import type { TaskCardProps } from './types';
 
