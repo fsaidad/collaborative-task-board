@@ -10,7 +10,7 @@ import {
   MouseSensor,
 } from '@dnd-kit/core';
 import { TaskUI } from '@/components/ui/Task';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 import { Board } from './Board';
 
 export const DndBoardWrapper = () => {

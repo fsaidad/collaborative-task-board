@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal } from '@/components/ui/Modal/Modal';
 import { CardView } from '../CardView/CardView';
 import { CardForm } from '../CardForm/CardForm';
-import { useBoardStore } from '@/stores/useBoardStore';
+import { useBoardStore } from '@/stores/index';
 
 type ModalMode = 'view' | 'edit' | 'create';
 

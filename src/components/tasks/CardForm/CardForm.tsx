@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button/Button';
-import { useBoardStore, type Priority } from '@/stores/useBoardStore';
+import { useBoardStore, type Priority } from '@/stores/index';
 import styles from './CardForm.module.css';
 import { PrioritySelect } from '@/components/ui/PrioritySelect/PrioritySelect';
 

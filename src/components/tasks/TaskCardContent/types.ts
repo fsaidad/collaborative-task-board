@@ -1,4 +1,4 @@
-import type { TaskCard } from '@/stores/useBoardStore';
+import type { TaskCard } from '@/stores/index';
 
 export interface TaskCardContentProps {
   card: TaskCard;
