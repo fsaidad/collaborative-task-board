@@ -66,7 +66,7 @@ interface BoardStore {
 export const useBoardStore = create<BoardStore>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         //моковые пользователи
         users: {
           'user-1': {
